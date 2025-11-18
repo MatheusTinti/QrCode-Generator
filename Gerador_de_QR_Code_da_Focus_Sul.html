@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de QR Code da Focus Sul</title>
+
+    <style>
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-size: 200% 200%;
+            animation: bgMove 12s ease infinite;
+            margin: 0;
+            padding: 0;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 620px;
+            margin-top: 0px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(14px);
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+            animation: fadeUp 0.9s ease;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        input[type="text"] {
+            width: 90%;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255,255,255,0.85);
+            font-size: 17px;
+            transition: 0.25s ease;
+        }
+
+        input[type="text"]:focus {
+            transform: scale(1.03);
+            box-shadow: 0 0 14px rgba(255,255,255,0.8);
+        }
+
+        .btn-row {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        button {
+            background: #1e88e5;
+            padding: 13px 22px;
+            font-size: 17px;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background: #1565c0;
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.28);
+        }
+
+        .qr-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeUp 0.6s ease;
+        }
+
+        footer {
+            margin: 25px;
+            font-size: 15px;
+            opacity: 0.85;
+        }
+
+        /* ====== ANIMAÇÕES ====== */
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bgMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Gerador de QR Code da Focus Sul</h1>
+
+    <div class="container">
+        
+        <input id="texto" type="text" placeholder="Digite o texto para gerar o QR Code...">
+
+        <div class="btn-row">
+            <button onclick="gerarQR()">Gerar QR Code</button>
+        </div>
+
+        <div id="qrArea" class="qr-box" style="display: none;">
+            <div id="qrcode"></div>
+        </div>
+
+        <div style="margin-top: 18px; text-align:center;">
+            <button onclick="copiarImagem()" id="copyBtn" style="display:none;">
+                Copiar Imagem
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        Desenvolvido por <b>Matheus H. Tinti</b>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        let qr;
+
+        function gerarQR() {
+            const texto = document.getElementById("texto").value;
+            if (!texto) return;
+
+            document.getElementById("qrcode").innerHTML = "";
+
+            qr = new QRCode(document.getElementById("qrcode"), {
+                text: texto,
+                width: 240,
+                height: 240
+            });
+
+            const area = document.getElementById("qrArea");
+            area.style.display = "flex";
+            area.style.animation = "fadeUp 0.6s ease";
+
+            document.getElementById("copyBtn").style.display = "inline-block";
+        }
+
+        async function copiarImagem() {
+            const canvas = document.querySelector("#qrcode canvas");
+
+            const blob = await new Promise(resolve => canvas.toBlob(resolve));
+
+            await navigator.clipboard.write([
+                new ClipboardItem({ "image/png": blob })
+            ]);
+
+            alert("QR Code copiado!");
+        }
+    </script>
+
+</body>
+</html>
