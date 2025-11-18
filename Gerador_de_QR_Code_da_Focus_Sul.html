@@ -85,7 +85,7 @@
             margin-top: 25px;
             padding: 20px;
             border-radius: 16px;
-            background: rgba(255,255,255,0.9);
+            background: #ffffff;
             box-shadow: 0 6px 18px rgba(0,0,0,0.22);
             display: flex;
             justify-content: center;
@@ -144,31 +144,32 @@
         Desenvolvido por <b>Matheus H. Tinti</b>
     </footer>
 
-    <script src="https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js
-"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+
 
     <script>
         let qr;
 
         function gerarQR() {
-            const texto = document.getElementById("texto").value;
-            if (!texto) return;
+    const texto = document.getElementById("texto").value;
+    if (!texto) return;
 
-            document.getElementById("qrcode").innerHTML = "";
+    document.getElementById("qrcode").innerHTML = "";
 
-            qr = new QRCode(document.getElementById("qrcode"), {
-                text: texto,
-                width: 240,
-                height: 240,
-                correctLevel: QRCode.CorrectLevel.L
-            });
+    const qr = qrcode(0, 'L');   // versão automática, correção máxima de capacidade
+    qr.addData(texto, 'Byte');   // força UTF-8
+    qr.make();
 
-            const area = document.getElementById("qrArea");
-            area.style.display = "flex";
-            area.style.animation = "fadeUp 0.6s ease";
+    document.getElementById("qrcode").innerHTML = qr.createImgTag(10, 16);
 
-            document.getElementById("copyBtn").style.display = "inline-block";
-        }
+    const area = document.getElementById("qrArea");
+    area.style.display = "flex";
+    area.style.animation = "fadeUp 0.6s ease";
+
+    document.getElementById("copyBtn").style.display = "inline-block";
+}
+
+
 
         async function copiarImagem() {
             const canvas = document.querySelector("#qrcode canvas");
