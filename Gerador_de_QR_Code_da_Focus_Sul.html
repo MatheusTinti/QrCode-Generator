@@ -99,8 +99,6 @@
             opacity: 0.85;
         }
 
-        /* ====== ANIMAÇÕES ====== */
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -160,7 +158,8 @@
             qr = new QRCode(document.getElementById("qrcode"), {
                 text: texto,
                 width: 240,
-                height: 240
+                height: 240,
+                correctLevel: QRCode.CorrectLevel.L
             });
 
             const area = document.getElementById("qrArea");
