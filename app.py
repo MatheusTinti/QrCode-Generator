@@ -12,15 +12,12 @@ def index():
     if request.method == "POST":
         texto = request.form["texto"]
 
-        # gera QR
         qr_img = qrcode.make(texto)
 
-        # converte para bytes
         img_buffer = io.BytesIO()
         qr_img.save(img_buffer, format="PNG")
         img_buffer.seek(0)
 
-        # converte para base64
         qr_base64 = base64.b64encode(img_buffer.read()).decode("utf-8")
 
     return render_template("index.html", qr_base64=qr_base64)
