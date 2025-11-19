@@ -145,12 +145,11 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
-
     <script>
-        function utf8Array(str) {
+
+function utf8Array(str) {
     return new TextEncoder().encode(str);
 }
-
 
 function toBinaryString(str) {
     const utf8 = new TextEncoder().encode(str);
@@ -161,18 +160,14 @@ function toBinaryString(str) {
     return binary;
 }
 
-
-
 function gerarQR() {
     const texto = document.getElementById("texto").value;
     if (!texto) return;
 
     document.getElementById("qrcode").innerHTML = "";
 
-    // Melhora de leitura
     const qr = qrcode(0, 'M');
 
-    // Converte corretamente UTF-8 → binary string
     const bin = toBinaryString(texto);
     qr.addData(bin, 'Byte');
 
@@ -184,8 +179,6 @@ function gerarQR() {
     document.getElementById("copyBtn").style.display = "inline-block";
 }
 
-
-        // copiar SVG como imagem
         async function copiarImagem() {
             const svgEl = document.querySelector("#qrcode svg");
             const svgData = new XMLSerializer().serializeToString(svgEl);
@@ -198,7 +191,7 @@ function gerarQR() {
 
             alert("QR Code copiado!");
         }
-    </script>
 
+    </script>
 </body>
 </html>
